@@ -1,0 +1,69 @@
+<div id="my-data">
+
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>Topics</th>
+				<th>Replies</th>
+				<th>Date</th>
+        <th>Views</th>
+			</tr>
+		</thead>
+		<tbody>
+
+
+
+
+
+{% for topic in data %}
+
+
+
+
+<div class="blog-container">
+  <tr>
+    <td>
+
+      <div class="blog-header">
+          <div class="blog-title">
+            <h3>By {{topic.postingUser}}</h3>
+          </div>
+      </div>
+    
+      <div class="blog-body">
+        <div class="blog-title">
+          <h1><a href="#">{{topic.title}}</a></h1>
+        </div>
+        <div class="blog-summary">
+          <p>{{topic.content}}</p>
+        </div>
+        <div class="blog-tags">
+          <ul>
+            <li><a >{{topic.category}}</a></li>
+            <li><a href="{{url_for('claim',topicID=topic.topicID)}}" style="color: red;">Read More...</a></li>
+          </ul>
+        </div>
+      </div>
+    
+      <hr>
+    
+    </div>
+
+
+    </td>
+    <td>3</td>
+    <td>
+      <li class="published-date">{{topic.creationTime}}</li>
+
+    </td>
+    <td>3 views</td>
+  </tr>
+
+ 
+  {% endfor %}
+
+</tbody>
+</table>
+</div>

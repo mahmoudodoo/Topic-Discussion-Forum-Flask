@@ -1,0 +1,31 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Login</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/register-login.css')}}">
+</head>
+<body>
+
+
+
+<div class="login">
+    <a  href="{{ url_for('home') }}" style="text-align: left;max-width:100px;"> 
+        <i class="gg-arrow-left-o" aria-hidden="true"></i>
+      </a>
+  <h1>  <img style="border-radius: 50%; max-width: 100px;" src="{{ url_for('static', filename='img/logo.png')}}" alt="Self Study"></h1>
+	<h1>Login</h1>
+    <form method="post">
+    	<input type="text" name="username" placeholder="Username" required="required" />
+        <input type="password" name="password" placeholder="Password" required="required" />
+        <button type="submit" class="btn btn-primary btn-block btn-large" >Login</button>
+        <a target="_blank" href="{{ url_for('register') }}" class="btn btn-primary btn-block btn-large">Create an Account Here!</a>
+    </form>
+</div>
+
+
+</body>
+
+</html>

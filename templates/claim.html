@@ -1,0 +1,42 @@
+{% extends "nav.html" %}
+
+
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/card.css')}}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/claim.css')}}" />
+
+
+<a  href="{{ url_for('home') }}" style="text-align: left;max-width:100px;"> 
+  <i class="gg-arrow-left-o" aria-hidden="true"></i>
+</a>
+<div class="title-label">{{topic['topicName']}}</div>
+
+{% for claim in claims %}
+
+<div class="post-card">
+  
+  <p>{{claim.text}}</p>
+  <ul class="replies-list">
+    <li class="reply">
+      <div class="author">John Doe</div>
+      <div class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor quam ac augue rutrum eleifend.</div>
+      <div class="date">2 hours ago</div>
+    </li>
+  </ul>
+
+  <div class="reply-form">
+    <form action="#" method="post">
+      <textarea name="reply" placeholder="Type your reply here..."></textarea>
+      <input type="submit" value="Reply">
+    </form>
+  </div>
+</div>
+
+
+<hr>
+
+ 
+  {% endfor %}
+
+{% endblock %}

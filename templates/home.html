@@ -1,0 +1,150 @@
+{% extends "nav.html" %}
+
+
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/card.css')}}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css')}}" />
+
+
+<select id="my-select" class="postbtn">
+  <option value="All">All</option>
+  <option value="Sport">Sport</option>
+  <option value="Travel">Travel</option>
+  <option value="IT">IT</option>
+</select>
+<!-- Trigger/Open The Modal -->
+<button id="myBtn" class="postbtn">Post a Topic</button>
+
+<input class="postbtn" style="width: 40%; text-align: center; align-items: center; margin-left: 25%;" type="text" name="search" id placeholder="Search..." oninput="onSearchInput(this)">
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <form method="post">
+      <input id="titleinput" name="titleinput" type="text" class="inputtext" placeholder="Title">
+      <label for="category" class="inputtext">Select a Category</label><br><br>
+      <select id="category" name="category" class="postbtn">
+        <option value="Sport">Sport</option>
+        <option value="Travel">Travel</option>
+        <option value="IT">IT</option>
+      </select>
+      <br><br>
+      <button type="submit" class="postbtn">Post</button>
+    </form>                       
+  </div>
+
+</div>
+
+<div id="my-data">
+
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>Topics</th>
+				<th>Replies</th>
+				<th>Date</th>
+        <th>Views</th>
+			</tr>
+		</thead>
+		<tbody>
+
+
+
+
+
+{% for topic in topics %}
+
+
+
+
+<div class="blog-container">
+  <tr>
+    <td>
+
+      <div class="blog-header">
+          <div class="blog-title">
+            <h3>By {{topic.postingUser}}</h3>
+          </div>
+      </div>
+    
+      <div class="blog-body">
+        <div class="blog-title">
+          <h1><a href="#">{{topic.topicName}}</a></h1>
+        </div>
+        <div class="blog-tags">
+          <ul>
+            <li><a >{{topic.category}}</a></li>
+            <li><a href="{{url_for('claim',topicID=topic.topicID)}}" style="color: red;">Read More...</a></li>
+          </ul>
+        </div>
+      </div>
+    
+<hr>
+    
+    </div>
+
+
+    </td>
+    <td>3</td>
+    <td>
+      <li class="published-date">{{topic.creationTime}}</li>
+
+    </td>
+    <td>3 views</td>
+  </tr>
+
+ 
+  {% endfor %}
+
+</tbody>
+</table>
+</div>
+  <script src="{{ url_for('static', filename='js/modal.js')}}"></script>
+
+<script>
+        // $(document).ready(function() {
+        //     setInterval(function() {
+        //         $.ajax({
+        //             url: "/data",
+        //             success: function(data) {
+        //               // here change your html data
+        //             }
+        //         });
+        //     }, 5000); // Refresh every 5 seconds
+        // });
+
+
+
+  const mySelect = document.getElementById('my-select');
+  const myData = document.getElementById('my-data');
+  
+  mySelect.addEventListener('change', () => {
+    const selectedValue = mySelect.value;
+    fetch(`/filter_by_category?choice=${selectedValue}`)
+      .then(response => response.text())
+      .then(data => {
+        myData.innerHTML = data;
+      });
+  });
+
+
+  function onSearchInput(ele){
+    const value = ele.value;
+    fetch(`/filter_by_search?value=${value}`)
+      .then(response => response.text())
+      .then(data => {
+        myData.innerHTML = data;
+      });
+  }
+
+</script>
+
+
+{% endblock %}
+    

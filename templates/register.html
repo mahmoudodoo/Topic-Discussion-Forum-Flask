@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Login</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/register-login.css')}}">
+</head>
+<body>
+
+
+
+<div class="login">
+    <a  href="{{ url_for('home') }}" style="text-align: left;max-width:100px;"> 
+        <i class="gg-arrow-left-o" aria-hidden="true"></i>
+      </a>
+  <h1>  <img style="border-radius: 50%; max-width: 100px;" src="{{ url_for('static', filename='img/logo.png')}}" alt="Self Study"></h1>
+	<h1>Register</h1>
+    <form method="post">
+    	<input type="text" name="username" placeholder="Username" required="required" />
+        <input id="password" type="password" name="password" placeholder="Password" required="required" />
+        <input id="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password" required="required" oninput="return verifyPassword()"/>
+        <button type="submit" class="btn btn-primary btn-block btn-large" >Register</button>
+        <a target="_blank" href="{{ url_for('login') }}" class="btn btn-primary btn-block btn-large">I already have an account!</a>
+    </form>
+    <span id = "message" style="color:red"> </span> <br><br>  
+</div>
+
+<script src="{{ url_for('static', filename='js/register.js')}}"></script>
+</body>
+
+</html>
