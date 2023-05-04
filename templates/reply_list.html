@@ -1,0 +1,31 @@
+<div id="claim-list">
+
+    {% for claim in claims %}
+    
+    <div class="post-card">
+      
+      <p>{{claim.text}}</p>
+    
+      <ul id="replies-list" class="replies-list">
+    
+        <li class="reply">
+          <div class="author">{{claim.repliesData[0].postingUser}}</div>
+          <div class="content">{{claim.repliesData[0].text}}</div>
+          <div class="date">{{claim.repliesData[0].creationTime}}</div>
+        </li>
+        
+      </ul>
+      <div class="reply-form">
+          <textarea id="replyText{{claim.claimID}}" name="reply" placeholder="Type your reply here..."></textarea>
+          <input type="hidden" name="claimIDText" value="{{claim.claimID}}">
+          <input  type="submit" value="Reply" onclick="onReplyClick(document.getElementById('replyText{{claim.claimID}}').value,'{{claim.topicID}}','{{claim.claimID}}')">
+      </div>
+    </div>
+    
+    
+    <hr>
+    
+     
+      {% endfor %}
+    </div>
+    

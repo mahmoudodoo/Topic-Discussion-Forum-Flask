@@ -1,28 +1,10 @@
 from app import app
-from flask import render_template,jsonify, request, abort,make_response,redirect,url_for
+from flask import render_template,jsonify, request, abort,redirect,url_for
 from get_db_connection import *
+from .auth_check import *
 
 
 
-
-@app.route("/data")
-def data():
-    conn = get_db_connection()
-    topics = conn.execute('SELECT * FROM topic').fetchall()
-    data = []
-    for topic in topics:
-        postingUser = conn.execute(f"SELECT * FROM user WHERE userID == '{topic['postingUser']}'").fetchone()
-        data.append(
-            {"id":topic['topicID'],
-             "title":topic['topicName'],
-             "postingUser":postingUser["userName"],
-             "category":topic['category'],
-             "creationTime":topic['creationTime'],
-             "topicID":topic['topicID']
-             }
-        )
-    conn.close()
-    return jsonify({"data": data})
 
 
 @app.route("/", methods = ['GET','POST'])
@@ -34,7 +16,6 @@ def home():
         postingUser = conn.execute(f"SELECT * FROM user WHERE userID == '{topic['postingUser']}'").fetchone()
         data.append(
             {"id":topic['topicID'],
-             "created":topic['creationTime'],
              "title":topic['topicName'],
              "postingUser":postingUser["userName"],
              "category":topic['category'],
@@ -57,19 +38,6 @@ def home():
 
     return render_template('home.html',topics=data,is_authenticated=is_authenticated(),current_user=current_user())
 
-def is_authenticated():
-    if request.cookies.get('username'):
-        return True
-    else:
-        return False
-    
-def current_user():
-    if is_authenticated():
-        conn = get_db_connection()
-        user = conn.execute('SELECT * FROM user WHERE userName = ?',(request.cookies.get('username'),)).fetchone() 
-        return user
-    else:
-        pass
 
 @app.route('/filter_by_category/', methods = ['GET'])
 def filter_by_category():

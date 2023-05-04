@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS replyText;
 CREATE TABLE replyText (
     replyTextID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,                           -- Reply ID
     postingUser INTEGER REFERENCES user(userID) ON DELETE SET NULL ON UPDATE CASCADE, -- FK of posting user
-    creationTime INTEGER NOT NULL,                                                    -- Posting time
+    creationTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,                                                   -- Posting time
     text TEXT NOT NULL                                                                -- Text of reply
 );
 

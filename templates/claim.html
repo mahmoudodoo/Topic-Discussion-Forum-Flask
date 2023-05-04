@@ -12,24 +12,27 @@
 </a>
 <div class="title-label">{{topic['topicName']}}</div>
 
+<div id="claim-list">
+
 {% for claim in claims %}
 
 <div class="post-card">
   
   <p>{{claim.text}}</p>
-  <ul class="replies-list">
-    <li class="reply">
-      <div class="author">John Doe</div>
-      <div class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor quam ac augue rutrum eleifend.</div>
-      <div class="date">2 hours ago</div>
-    </li>
-  </ul>
 
+  <ul id="replies-list" class="replies-list">
+    
+    <li class="reply">
+      <div class="author">{{claim.repliesData[0].postingUser}}</div>
+      <div class="content">{{claim.repliesData[0].text}}</div>
+      <div class="date">{{claim.repliesData[0].creationTime}}</div>
+    </li>
+    
+  </ul>
   <div class="reply-form">
-    <form action="#" method="post">
-      <textarea name="reply" placeholder="Type your reply here..."></textarea>
-      <input type="submit" value="Reply">
-    </form>
+      <textarea id="replyText{{claim.claimID}}" name="reply" placeholder="Type your reply here..."></textarea>
+      <input type="hidden" name="claimIDText" value="{{claim.claimID}}">
+      <input  type="submit" value="Reply" onclick="onReplyClick(document.getElementById('replyText{{claim.claimID}}').value,'{{claim.topicID}}','{{claim.claimID}}')">
   </div>
 </div>
 
@@ -38,5 +41,20 @@
 
  
   {% endfor %}
+</div>
+
+<script>
+    function onReplyClick(replyText,topicID,claimID){
+    const myData = document.getElementById('claim-list');
+    console.log(replyText)
+    fetch(`/reply?topicID=${topicID}&replyText=${replyText}&claimID=${claimID}`)
+      .then(response => response.text())
+      .then(data => {
+        myData.innerHTML = data;
+        replyText.value = ""
+      });
+  }
+
+</script>
 
 {% endblock %}

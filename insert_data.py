@@ -1,4 +1,6 @@
 import sqlite3
+import datetime
+dt_now = datetime.datetime.now()
 
 connection = sqlite3.connect('database/database.db')
 
