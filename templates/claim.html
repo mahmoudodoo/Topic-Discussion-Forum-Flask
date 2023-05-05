@@ -5,11 +5,42 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/card.css')}}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/claim.css')}}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css')}}" />
+
+
+
 
 
 <a  href="{{ url_for('home') }}" style="text-align: left;max-width:100px;"> 
   <i class="gg-arrow-left-o" aria-hidden="true"></i>
+  
 </a>
+
+{% if is_authenticated %}
+<button id="claimBtn" class="postbtn">Post a Claim</button>
+{% else %}
+<button id="claimBtn" class="postbtn" disabled style="color: red;">Please Login to Post a Claim</button>
+{% endif %}
+<!-- The Modal -->
+<div id="claimModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span id="closeClaim" class="close">&times;</span>
+    <form method="post">
+      <label for="claimtext">Create A Claim</label>
+      <textarea id="claimtext" name="claimtext" type="text" class="inputtext" placeholder="Write Claim Text Here..."></textarea>
+      <input type="hidden" name="topicID" value="{{topic['topicID']}}">
+      <br><br>
+      <button type="submit" class="postbtn">Claim</button>
+    </form>
+  </div>
+
+</div>
+
+<div id="my-data">
+
+
 <div class="title-label">{{topic['topicName']}}</div>
 
 <div id="claim-list">
@@ -17,23 +48,30 @@
 {% for claim in claims %}
 
 <div class="post-card">
-  
+  <div class="author">{{claim.postingUser}}</div>
   <p>{{claim.text}}</p>
 
   <ul id="replies-list" class="replies-list">
-    
+    {% if claim.repliesData|length > 0%}
     <li class="reply">
+      
       <div class="author">{{claim.repliesData[0].postingUser}}</div>
       <div class="content">{{claim.repliesData[0].text}}</div>
       <div class="date">{{claim.repliesData[0].creationTime}}</div>
     </li>
+    {% endif %}
     
   </ul>
   <div class="reply-form">
       <textarea id="replyText{{claim.claimID}}" name="reply" placeholder="Type your reply here..."></textarea>
       <input type="hidden" name="claimIDText" value="{{claim.claimID}}">
+      {% if is_authenticated %}
       <input  type="submit" value="Reply" onclick="onReplyClick(document.getElementById('replyText{{claim.claimID}}').value,'{{claim.topicID}}','{{claim.claimID}}')">
+      {% else %}
+      <input  type="submit" value="Please Login to Reply" style="color: red;background-color: wheat;" disabled>
+      {% endif %}
   </div>
+  <li><a href="{{url_for('claim_page',claimID=claim.claimID)}}" style="color: rgb(0, 4, 255);">Read More...</a></li>
 </div>
 
 
@@ -56,5 +94,5 @@
   }
 
 </script>
-
+<script src="{{ url_for('static', filename='js/claim_modal.js')}}"></script>
 {% endblock %}

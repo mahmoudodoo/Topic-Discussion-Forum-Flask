@@ -11,16 +11,24 @@ from .auth_check import *
 def home():
     conn = get_db_connection()
     topics = conn.execute('SELECT * FROM topic').fetchall()
+    
+
+    
     data = []
     for topic in topics:
+        n_replies = 0
         postingUser = conn.execute(f"SELECT * FROM user WHERE userID == '{topic['postingUser']}'").fetchone()
+        
+
+
         data.append(
             {"id":topic['topicID'],
              "title":topic['topicName'],
              "postingUser":postingUser["userName"],
              "category":topic['category'],
              "creationTime":topic['creationTime'],
-             "topicID":topic['topicID']
+             "topicID":topic['topicID'],
+             "views":topic['views'],
              }
         )
     if request.method=='POST':
@@ -56,7 +64,8 @@ def filter_by_category():
              "postingUser":postingUser["userName"],
              "category":topic['category'],
              "creationTime":topic['creationTime'],
-             "topicID":topic['topicID']
+             "topicID":topic['topicID'],
+             "views":topic['views']
              }
         )
         print(topic['category'])
@@ -82,7 +91,8 @@ def filter_by_search():
              "postingUser":postingUser["userName"],
              "category":topic['category'],
              "creationTime":topic['creationTime'],
-             "topicID":topic['topicID']
+             "topicID":topic['topicID'],
+             "views":topic['views']
              }
         )
     conn.close()

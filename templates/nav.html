@@ -10,11 +10,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css')}}" />
     <title>Discussion Forum</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
+    <!-- Login Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span id="closeLogin" class="close">&times;</span>
+      <h2>Login</h2>
+      <form method="post" action="/login">
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" required>
+        <br>
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+        <br>
+        <button type="submit" class="btn">Login</button>
+      </form>
+    </div>
+  </div>
+
+
+
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span id="closeRegister" class="close">&times;</span>
+      <div class="login">
+        <h1>Register</h1>
+        <form method="post" action="/register">
+            <input type="text" name="username" placeholder="Username" required="required" />
+            <input id="password" type="password" name="password" placeholder="Password" required="required" />
+            <input id="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password" required="required" oninput="return verifyPassword()"/>
+            <button type="submit" class="btn" >Register</button>
+        </form>
+        <span id = "message" style="color:red"> </span> <br><br>  
+    </div>
+    </div>
+  </div>
+
+
+
     <nav class="navbar">
         <!-- LOGO -->
         <div class="logo">Debate Forum</div>
@@ -33,7 +71,8 @@
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 
                 {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a id="loginBtn" >Login</a></li>
+                <li><a id="registerBtn" >Register New User</a></li>
                 {% endif %}
    
 
@@ -46,6 +85,11 @@
 
         {% endblock %}
     </section>
+
+    <script
+     src="{{ url_for('static', filename='js/login_modal.js')}}"></script>
+     <script src="{{ url_for('static', filename='js/register_modal.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/register.js')}}"></script>
 </body>
 
 </html>

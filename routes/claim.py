@@ -9,6 +9,8 @@ def claim(topicID):
     conn = get_db_connection()
     claims = conn.execute(f"SELECT * FROM claim WHERE topic == '{topicID}'").fetchall()
     topic = conn.execute(f"SELECT * FROM topic WHERE topicID == '{topicID}'").fetchone()
+    conn.execute(f"UPDATE topic SET views = views + 1 WHERE topicID = {topic['topicID']}")
+    conn.commit()
     data = []
     cur = conn.cursor()
 
@@ -21,13 +23,13 @@ def claim(topicID):
                 JOIN replyText ON replyToClaim.reply = replyText.replyTextID
                 WHERE claim.claimID = {claim['claimID']} ORDER BY reply_creation_time DESC""").fetchall()
         repliesData = []
-        for re in replies:
-            postingUser = conn.execute(f"SELECT * FROM user WHERE userID == '{re['reply_posting_user']}'").fetchone()
+        for replay in replies:
+            postingUser = conn.execute(f"SELECT * FROM user WHERE userID == '{replay['reply_posting_user']}'").fetchone()
             repliesData.append({
-                "reply_id":re["reply_id"],
+                "reply_id":replay["reply_id"],
                 "postingUser":postingUser["userName"],
-                "text":re['reply_text'],
-                "creationTime":re['reply_creation_time'],
+                "text":replay['reply_text'],
+                "creationTime":replay['reply_creation_time'],
         })
         
         data.append(
@@ -40,6 +42,16 @@ def claim(topicID):
              "topicID":topicID
              }
         )
-
+    if request.method=='POST':
+        cur = conn.cursor()
+        claimtext = request.form.get('claimtext')
+        topicID = request.form.get('topicID')
+        user = current_user()
+        cur.execute("INSERT INTO claim (topic, postingUser, text) VALUES (?, ?, ?)",
+            (topicID ,user['userID'],claimtext)
+            )
+        conn.commit()
+        return redirect(url_for('claim',topicID=topicID))
+    
     conn.close()
-    return render_template('claim.html',claims = data,topic=topic)
+    return render_template('claim.html',claims = data,topic=topic, is_authenticated=is_authenticated(),current_user=current_user())

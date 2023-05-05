@@ -1,0 +1,49 @@
+<div id="claim-list">
+
+    <div class="post-card">
+      <h3>This Claim By {{claim.postingUser}}</h3>
+      <p>{{claim.claim_header}}</p>
+  
+      <ul id="replies-list" class="replies-list">
+  
+        {% for reply in claim.repliesData %}
+        <li class="reply">
+          reply by<div class="author">{{reply.postingUser}}</div>
+          <div class="content">{{reply.text}}</div>
+          <div class="date">{{reply.creationTime}}</div>
+  
+          <!-- reply  to reply list we need to create a for loop here -->
+          {% for rr in reply.replies_to_replies %}
+        <li class="reply2">
+          <h4>By <strong>{{rr.postingUser}}</strong></h1>
+            <div class="content">{{rr.text}}</div>
+            <div class="date">{{rr.creationTime}}</div>
+        </li>
+  
+        {% endfor %}
+        <!-- end for loop here for the reply to reply list -->
+        <div class="input-group">
+          <input id="replytoreplytext{{reply.reply_id}}" name="replytoreplytext" type="text" class="form-control"
+            placeholder="Type your message...">
+          <input type="hidden" name="parentReplyId" value="{{reply.reply_id}}">
+          <input class="btn btn-primary" type="submit" value="Reply to {{reply.postingUser}}"
+            onclick="onReplyToReplyClick(document.getElementById('replytoreplytext{{reply.reply_id}}').value,'{{reply.reply_id}}','{{claimID}}')">
+        </div>
+  
+        </li>
+  
+        {% endfor %}
+  
+      </ul>
+      <div class="reply-form">
+        <textarea id="replyText{{claimID}}" name="reply" placeholder="Type your reply here..."></textarea>
+        <input type="hidden" name="claimIDText" value="{{claimID}}">
+        <input type="submit" value="Reply"
+          onclick="onReplyClick(document.getElementById('replyText{{claimID}}').value,'{{claimID}}')">
+      </div>
+    </div>
+  
+  
+    <hr>
+  
+  </div>

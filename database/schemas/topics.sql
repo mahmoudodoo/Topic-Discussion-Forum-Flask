@@ -5,5 +5,6 @@ CREATE TABLE topic (
     postingUser INTEGER REFERENCES user(userID) ON DELETE SET NULL ON UPDATE CASCADE, -- FK (foreign key) of posting user
     creationTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,                       -- Time topic was created
     updateTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,      -- Last time a claim/reply was added
-    category TEXT NOT NULL
+    category TEXT NOT NULL,
+    views INTEGER NOT NULL DEFAULT 0
 );
